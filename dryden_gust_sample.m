@@ -9,20 +9,20 @@ gustu = gust_state(1);
 gustv = gust_state(2);
 gustw = gust_state(3);
 %rotated such that x vector is pointed directly upwards
-hft = h*3.28084;
+hft = h*3.28084;          % Unit conversion from m to ft
 hft = max(hft,1);
 if hft<1000
 sigmaw = gustintensity/((0.177+0.000823*hft).^(0.4));
 sigmav = sigmaw;
 sigmau = gustintensity;
-Lw = (hft/(0.177+0.000823*hft).^1.2)/3.28084;
-Lv = Lw;
-Lu = hft/3.28084;
+Lu = (hft/(0.177+0.000823*hft).^1.2)/3.28084;
+Lv = Lu;
+Lw = hft/3.28084;
 elseif hft>2000
 sigmaw = gustintensity;
 sigmau = gustintensity;
 sigmav = gustintensity;
-Lu = 1750/3.28084;
+Lu = 1750;
 Lv = Lu;
 Lw = Lu;
 else

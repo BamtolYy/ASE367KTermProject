@@ -36,6 +36,7 @@ for t = 1:N_timestep
     V = V + accel*dt;
     h = h + V*dt + 0.5*accel*dt.^2;
 end
+
 %plot time series
 figure(2)
 clf
@@ -43,6 +44,7 @@ plot((1:N_timestep)*dt, gustdata(1:3,:)' )
 legend('u_g','v_g','w_g')
 xlabel('Time (s)')
 ylabel('Gust (m/s)')
+
 %plot Power Spectral Densities
 fs = 1/(dt);
 xdft = fft(gustdata(1,:)');
@@ -72,3 +74,29 @@ psdx(2:end-1) = 2*psdx(2:end-1);
 freq = 0:fs/N_timestep:fs/2;
 semilogx(freq,10*log10(psdx) )
 legend('u_g','v_g','w_g')
+
+%% Simulate Flight
+%---- Set Up
+state  = zeros(N_sample,9);
+params = zeros(1,10);
+% RocketParameters
+params(1) = mass_total;    % Mass
+params(2) = ;   % Ixx
+params(3) = ;    % Area
+params(4) = C_N_alpha;    % CNa
+params(5) =;    % CN_q
+params(6) =;    % CM_a
+params(7) =;    % CM_q
+params(8) =;    % CD_
+params(9) =;    % Gust Intensity
+params(10) =;   % Gimbal CG
+% Initial Conditions
+stateInit  = zeros(1,size(state,2));
+statek     = stateInit;
+
+
+for k = 1:N_sample
+    [statek,~]=vehicle_dynamics(statek,params,dt);
+    state(k,:) = statek;
+
+end
